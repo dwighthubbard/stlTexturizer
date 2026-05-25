@@ -1,0 +1,35 @@
+[build-system]
+requires = ["briefcase>=0.3.26"]
+build-backend = "briefcase"
+
+[tool.briefcase]
+project_name = "BumpMesh"
+bundle = "com.cnckitchen"
+version = "0.1.0"
+url = "https://bumpmesh.com/"
+license = "GPL-3.0+"
+license-files = ["LICENSE"]
+author = "CNC Kitchen"
+author_email = "contact@cnckitchen.com"
+
+[tool.briefcase.app.bumpmesh_native]
+formal_name = "BumpMesh"
+description = "Native desktop wrapper for the BumpMesh local mesh texturizer."
+long_description = """BumpMesh applies displacement textures to STL, OBJ, and 3MF meshes locally."""
+icon = "assets/logo_big"
+sources = [
+    "src/bumpmesh_native",
+]
+requires = [
+    "toga>=0.5.2",
+]
+
+[tool.briefcase.app.bumpmesh_native.macOS]
+requires = [
+    "toga-cocoa>=0.5.2",
+]
+
+[tool.briefcase.app.bumpmesh_native.windows]
+requires = [
+    "toga-winforms>=0.5.2",
+]

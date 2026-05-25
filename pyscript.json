@@ -1,0 +1,40 @@
+{
+  "files": {
+    "./pyscript_app/__init__.py": "./pyscript_app/__init__.py",
+    "./pyscript_app/bumpmesh_js.py": "./pyscript_app/bumpmesh_js.py",
+    "./pyscript_app/core.py": "./pyscript_app/core.py",
+    "./pyscript_app/displacement.py": "./pyscript_app/displacement.py",
+    "./pyscript_app/exporter.py": "./pyscript_app/exporter.py",
+    "./pyscript_app/exclusion.py": "./pyscript_app/exclusion.py",
+    "./pyscript_app/geometry_utils.py": "./pyscript_app/geometry_utils.py",
+    "./pyscript_app/mapping.py": "./pyscript_app/mapping.py",
+    "./pyscript_app/smart_resolution.py": "./pyscript_app/smart_resolution.py",
+    "./pyscript_app/stl_loader.py": "./pyscript_app/stl_loader.py",
+    "./pyscript_app/texture_analysis.py": "./pyscript_app/texture_analysis.py"
+  },
+  "js_modules": {
+    "main": {
+      "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js": "three",
+      "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/STLLoader.js": "stl_loader_addon",
+      "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/OBJLoader.js": "obj_loader_addon",
+      "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js": "fflate",
+      "./js/decimation.js": "decimation_js",
+      "./js/displacement.js": "displacement_js",
+      "./js/exclusion.js": "exclusion_js",
+      "./js/exporter.js": "exporter_js",
+      "./js/i18n.js": "i18n_js",
+      "./js/main.js": "main_js",
+      "./js/mapping.js": "mapping_js",
+      "./js/meshValidation.js": "mesh_validation_js",
+      "./js/presetTextures.js": "preset_textures_js",
+      "./js/previewMaterial.js": "preview_material_js",
+      "./js/regularize.js": "regularize_js",
+      "./js/smartResolution.js": "smart_resolution_js",
+      "./js/stlLoader.js": "stl_loader_js",
+      "./js/subdivision.js": "subdivision_js",
+      "./js/textureAnalysis.js": "texture_analysis_js",
+      "./js/viewer.js": "viewer_js"
+    }
+  },
+  "experimental_create_proxy": "auto"
+}

@@ -4,7 +4,7 @@
 **GitHub:** https://github.com/CNCKitchen/stlTexturizer
 **Author:** Stefan Hermann
 
-A browser-based tool for applying surface displacement textures to 3D meshes — no installation required.
+A PyScript-hosted browser tool for applying surface displacement textures to 3D meshes — no installation required.
 
 Load an STL, OBJ, or 3MF file, pick a texture, tune the parameters, and export a new displaced STL ready for slicing.
 
@@ -86,7 +86,7 @@ Load an STL, OBJ, or 3MF file, pick a texture, tune the parameters, and export a
 
 ## Usage
 
-1. Open `index.html` in a modern browser (Chrome, Edge, Firefox, Safari).
+1. Serve the repository with a local static server and open the served URL in a modern browser (Chrome, Edge, Firefox, Safari).
 2. Drop a model onto the viewport or click **Load STL…** (supports STL, OBJ, 3MF).
 3. Select a texture preset from the sidebar (or upload a custom image).
 4. Choose a projection mode and adjust UV scale, offset, rotation, and amplitude.
@@ -99,10 +99,27 @@ Load an STL, OBJ, or 3MF file, pick a texture, tune the parameters, and export a
 
 ```
 index.html            # Main entry point
+pyscript.json         # PyScript config and browser ES-module bridge
+pyproject.toml        # BeeWare / Briefcase packaging config
 style.css             # Styles (light / dark theme)
 logo.png              # Favicon & header logo
 CNAME                 # Custom domain (bumpmesh.com)
 textures/             # Built-in JPG/PNG displacement map images (24 textures)
+pyscript_app/
+  main.py             # PyScript bootstrap that starts the browser app
+  core.py             # Python core module registry
+  mapping.py          # Python UV projection logic
+  texture_analysis.py # Python texture detail analysis
+  geometry_utils.py   # Python geometry validation, bounds, area helpers
+  stl_loader.py       # Python model-loading dispatch and 3MF parser
+  exclusion.py        # Python face masking and adjacency helpers
+  displacement.py     # Python displacement baker
+  smart_resolution.py # Python smart subdivision estimator
+  exporter.py         # Python STL / 3MF export generation
+  bumpmesh_js.py      # Temporary compatibility facade for unported UI modules
+src/bumpmesh_native/
+  app.py              # BeeWare/Toga native desktop launcher
+  webroot/            # Bundled web/PyScript assets served inside the native app
 js/
   main.js             # App bootstrap & UI wiring
   viewer.js           # Three.js scene / camera / controls
@@ -154,12 +171,62 @@ Open http://localhost:8000 in your browser and you're ready to go.
 
 > **Tip:** Any static server will work — the app has no server-side dependencies.
 
+## Native Desktop Builds
+
+This repository also contains a BeeWare/Briefcase desktop wrapper in
+`src/bumpmesh_native`. The native app opens a Toga `WebView` and serves the
+bundled BumpMesh web/PyScript assets from a localhost server inside the app
+process, which is required because desktop WebView widgets cannot load local
+`file://` pages directly.
+
+Install BeeWare tooling, then run the app from the project root:
+
+```bash
+python -m pip install briefcase
+briefcase dev
+```
+
+Build platform packages:
+
+```bash
+# macOS
+briefcase create macOS
+briefcase build macOS
+briefcase package macOS
+
+# Windows
+briefcase create windows
+briefcase build windows
+briefcase package windows
+```
+
+The packaged app uses the asset copy under `src/bumpmesh_native/webroot`.
+Refresh that directory after changing the browser/PyScript app files:
+
+```bash
+python scripts/sync_beeware_webroot.py
+```
+
+The desktop package icon is configured with `icon = "assets/logo_big"` in
+`pyproject.toml`. Keep `assets/logo_big.icns` for macOS and `assets/logo_big.ico`
+for Windows in sync with `assets/logo_big.png`.
+
+## Runtime Architecture
+
+The browser entrypoint is now `pyscript_app/main.py`, loaded by PyScript from `index.html`.
+The reusable core mesh modules are being migrated to Python under `pyscript_app/`.
+These Python modules call external browser libraries such as Three.js and fflate
+through PyScript where needed. `bumpmesh_js.py` is a temporary compatibility
+facade for the still-unported UI/controller modules while the migration is in
+progress.
+
 ## Dependencies
 
 Loaded via CDN ([jsDelivr](https://www.jsdelivr.com/)) — no build step or npm install needed:
 
 | Library | Version | License | Usage |
 |---------|---------|---------|-------|
+| [PyScript](https://pyscript.net/) | 2026.3.1 | Apache-2.0 | Python runtime and JS-module bridge in the browser |
 | [Three.js](https://threejs.org/) | 0.170.0 | MIT | 3D rendering, scene management, materials |
 | — [OrbitControls](https://threejs.org/docs/#examples/en/controls/OrbitControls) | 0.170.0 | MIT | Camera orbit / pan / zoom |
 | — [STLLoader](https://threejs.org/docs/#examples/en/loaders/STLLoader) | 0.170.0 | MIT | Binary & ASCII STL import |

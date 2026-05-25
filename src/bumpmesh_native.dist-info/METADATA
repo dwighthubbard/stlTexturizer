@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.4.2
+Name: bumpmesh_native
+Formal-Name: BumpMesh
+App-ID: com.cnckitchen.bumpmesh-native
+Version: 0.1.0
+Home-page: https://bumpmesh.com/
+Download-URL: https://bumpmesh.com/
+Author: CNC Kitchen
+Author-email: contact@cnckitchen.com
+Summary: Native desktop wrapper for the BumpMesh local mesh texturizer.
